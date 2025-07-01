@@ -68,8 +68,8 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{navlinks}</ul>
       </div>
       <div className="navbar-end rounded-2xl gap-4">
-        <a className="btn btn-soft hover:bg-[#ACC857]">Sign In</a>
-        <a className="btn bg-primary">Be a rider</a>
+        <a className="btn btn-soft hover:bg-[#ACC857] hover:text-white ">Sign In</a>
+        <a className="btn text-base-300 bg-primary">Be a rider</a>
       </div>
     </div>
   );
