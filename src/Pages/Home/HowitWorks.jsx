@@ -28,7 +28,7 @@ const HowItWorks = () => {
   return (
     <section className=" py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold mb-8 text-gray-800">How it Works</h2>
+        <h2 className="text-3xl font-bold mb-8 text-base-content">How it Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step, index) => (
             <div key={index} className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">

@@ -6,7 +6,7 @@ import { router } from './router/Router'
 
 
 createRoot(document.getElementById('root')).render(
-    <div className='urbanist-font bg-gray-200'>
+    <div className='urbanist-font '>
          <RouterProvider router={router}></RouterProvider>
     </div>
 
