@@ -1,4 +1,4 @@
-import collapse from "daisyui/components/collapse";
+
 import React, { useState } from "react";
 
 const FAQ = () => {
@@ -11,7 +11,7 @@ const FAQ = () => {
         }
     }
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto my-10">
       <h1 className="font-bold text-3xl text-center">Frequently Asked Question (FAQ)</h1>
       <p className="text-base-content text-center max-w-4xl mx-auto">
         Enhance posture, mobility, and well-being effortlessly with Posture Pro.
@@ -19,7 +19,7 @@ const FAQ = () => {
         ease!
       </p>
      {/* accordion */}
-      <div className={`collapse collapse-arrow ${activeIndex === 0 ? "bg-gray-300" :"bg-base-100" }  border border-base-300`}>
+      <div className={`collapse collapse-arrow ${activeIndex === 0 ? "bg-gray-300" :"bg-base-100" }  border border-base-300 p-4`}>
         <input type="radio" name="my-accordion-2" checked={activeIndex===0} onChange={()=>handleToggle(0)}/>
         <div className="collapse-title font-semibold">
          How does this posture corrector work?
@@ -28,7 +28,7 @@ const FAQ = () => {
          A posture corrector works by providing support and gentle alignment to your shoulders, back, and spine, encouraging you to maintain proper posture throughout the day. Here’s how it typically functions: A posture corrector works by providing support and gentle alignment to your shoulders.
         </div>
       </div>
-      <div className={`collapse collapse-arrow ${activeIndex === 1 ? "bg-gray-300" :"bg-base-100" }  border border-base-300`}>
+      <div className={`collapse collapse-arrow ${activeIndex === 1 ? "bg-gray-300" :"bg-base-100" }  border border-base-300 p-4`}>
         <input type="radio" name="my-accordion-2" checked={activeIndex===1} onChange={()=>handleToggle(1)}/>
         <div className="collapse-title font-semibold">
           I forgot my password. What should I do?
@@ -38,7 +38,7 @@ const FAQ = () => {
           instructions sent to your email.
         </div>
       </div>
-      <div className={`collapse collapse-arrow ${activeIndex === 2 ? "bg-gray-300" :"bg-base-100" }  border border-base-300`}>
+      <div className={`collapse collapse-arrow ${activeIndex === 2 ? "bg-gray-300" :"bg-base-100" }  border border-base-300 p-4`}>
         <input type="radio" name="my-accordion-2" checked={activeIndex===2} onChange={()=>handleToggle(2)}/>
         <div className="collapse-title font-semibold">
           How do I update my profile information?
