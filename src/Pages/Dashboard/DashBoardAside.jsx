@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
+import UseAdmin from "../../Hooks/UseAdmin";
+import Loading from "../../Components/Loading";
 
 const DashboardAside = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAdmin, adminLoading]=UseAdmin();
+
+  if(adminLoading) return <Loading/>
 
   return (
     <>
@@ -39,7 +44,7 @@ const DashboardAside = () => {
         <ul className="space-y-4 menu w-full">
           <h2 className="text-2xl font-bold hidden md:block">Dashboard</h2>
             <li>
-            <NavLink to="my-parcels" className={({isActive})=> isActive && " bg-amber-500 px-4 py-2"} onClick={() => setIsSidebarOpen(false)}>
+            <NavLink to="my-parcels" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2": ""} onClick={() => setIsSidebarOpen(false)}>
             My Parcels
             </NavLink>
           </li>
@@ -48,11 +53,28 @@ const DashboardAside = () => {
               Payment History
             </NavLink>
           </li>
+          {isAdmin && (
+            <>
           <li>
-            <NavLink to="rider" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
-              Users
+            <NavLink to="active-riders" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
+              Active Riders
             </NavLink>
           </li>
+          <li>
+            <NavLink to="pending-riders" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
+              Pending Riders
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="assign-riders" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
+              Assign Riders
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="users" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
+              Users
+            </NavLink>
+          </li></>)}
           <li>
             <NavLink to="profile" className={({isActive})=> isActive ? " bg-amber-500 px-4 py-2" :""} onClick={() => setIsSidebarOpen(false)}>
               Profile

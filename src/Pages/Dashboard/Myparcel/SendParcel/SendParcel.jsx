@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { generateTrackingId } from "./../Shared/generateTrackingId";
-import UseAuth from "../../Hooks/UseAuth";
-import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import { generateTrackingId } from "../../../Shared/generateTrackingId";
+import UseAuth from "../../../../Hooks/UseAuth";
+import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
@@ -100,7 +100,7 @@ const SendParcel = () => {
       receiverServiceCenter,
       payment_status: "un-paid",
       delivery_status: "not-collected",
-      Sending_date: new Date().toISOString().split("T")[0],
+      Sending_date: new Date(),
     };
     Swal.fire({
       title: "Delivery Cost ",

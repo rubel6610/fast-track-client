@@ -29,9 +29,12 @@ const Register = () => {
         }).then(async () => {
           //sending user details to db
           const userDetails = {
-            name,
-            email,
-            photoUrl,
+            name: user.displayName,
+            email: user.email,
+            role:"user",
+            photoUrl: user.photoURL,
+            createdAt: user.metadata.creationTime,
+            lastLoginAt: user.metadata.lastLoginAt,
           };
           const res = await axiosSecure.post("/users", userDetails);
           if (res.data.insertedId) {
@@ -56,29 +59,32 @@ const Register = () => {
       });
   };
   const handleGoogleSignup = () => {
-    googleSignIn().then(async(result) => {
+    googleSignIn().then(async (result) => {
       const user = result.user;
-      const userDetails ={
-        name:user.displayName,
-        email:user.email,
-        photoUrl:user.photoURL,
+      const userDetails = {
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL,
+        role:"user",
+        createdAt: user.metadata.creationTime,
+        lastLoginAt: user.metadata.lastLoginAt,
+      };
+      const res = await axiosSecure.post("/users", userDetails);
+      if (res.data.insertedId) {
+        Swal.fire({
+          title: "Success!",
+          text: "Registration Completed by Google!",
+          icon: "success",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#16a34a",
+        });
       }
-     const res = await axiosSecure.post("/users", userDetails);
-     if(res.data.insertedId){
-       Swal.fire({
-        title: "Success!",
-        text: "Registration Completed by Google!",
-        icon: "success",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#16a34a",
-      });
-     }
       navigate(from);
     });
   };
   const handleimageUpload = async (e) => {
     const image = e.target;
-    const files = image.files[0]
+    const files = image.files[0];
     const formData = new FormData();
     formData.append("image", files);
 
@@ -133,7 +139,6 @@ const Register = () => {
               required
               placeholder="Photo"
             />
-      
 
             <label className="label" htmlFor="password">
               Password

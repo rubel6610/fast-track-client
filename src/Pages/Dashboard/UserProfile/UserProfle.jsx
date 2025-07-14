@@ -2,25 +2,39 @@ import React, { useState } from "react";
 import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 import UseAuth from "../../../Hooks/UseAuth";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
 const UserProfile = () => {
+  const AxiosSecure = UseAxiosSecure();
   const { user } = UseAuth();
   const [name, setName] = useState(user?.displayName || "");
   const [photo, setPhoto] = useState(user?.photoURL || "");
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
     try {
       await updateProfile(user, {
         displayName: name,
         photoURL: photo,
       });
-      Swal.fire({
-        icon: "success",
-        title: "Profile Updated",
-        text: "Your profile has been successfully updated!",
-        confirmButtonColor: "#16a34a",
-      });
+
+      const userDetails = {
+        name,
+        photo,
+      };
+      const res = await AxiosSecure.patch(
+        `/users/updateProfile?email=${user.email}`,
+        userDetails
+      );
+      if (res.data.modifiedCount) {
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated",
+          text: "Your profile has been successfully updated!",
+          confirmButtonColor: "#16a34a",
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",

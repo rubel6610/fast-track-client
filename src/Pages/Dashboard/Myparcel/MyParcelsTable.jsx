@@ -63,7 +63,7 @@ const MyParcelsTable = ({ parcels, refetch }) => {
               <tr key={parcel._id}>
                 <td>{index + 1}</td>
                 <td>{parcelType}</td>
-                <td>{Sending_date}</td>
+                <td>{Sending_date.split("T")[0]}</td>
                 <td>{Cost}</td>
                 <td>
                   <span
@@ -79,8 +79,8 @@ const MyParcelsTable = ({ parcels, refetch }) => {
                
                <td className="flex gap-2">
                 <Link to={`/dashboard/my-parcels/view/${_id}`} className="btn btn-outline btn-success">View</Link>
-                <Link to={`/dashboard/my-parcels/pay/${_id}`} className="btn btn-outline btn-warning">Pay</Link>
-                <button onClick={()=>handleDelete(_id)} className="btn btn-outline btn-error">Delete</button>
+                <Link  to={`/dashboard/my-parcels/pay/${_id}`} className={`btn btn-outline btn-warning ${payment_status === "paid" && "hidden"}`}>Pay</Link>
+                <button  onClick={()=>handleDelete(_id)} className="btn btn-outline btn-error">Delete</button>
                </td>
               </tr>
             );

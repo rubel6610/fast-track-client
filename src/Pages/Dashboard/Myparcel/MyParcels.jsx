@@ -1,7 +1,7 @@
 import React from 'react';
 import UseAuth from '../../../Hooks/UseAuth';
 import UseAxiosSecure from '../../../Hooks/UseAxiosSecure';
-import Card from './MyParcelsTable';
+import MyParcelsTable from './MyParcelsTable';
 import { useQuery } from '@tanstack/react-query';
 
 const MyParcels = () => {
@@ -10,14 +10,18 @@ const MyParcels = () => {
  const {data:parcels=[], refetch }=useQuery({
     queryKey:["my-parcels", user.email],
     queryFn:async ()=>{
-        const res = await axiosSecure.get(`/my-parcels?email=${user.email}`)
+        const res = await axiosSecure.get(`/my-parcels?email=${user.email}`,{
+            headers:{
+                Authorization:`Bearer ${user.accessToken}`
+            }
+        })
         return res.data;
     }
  });
  
     return (
         <div>
-            <Card parcels={parcels} refetch={refetch}></Card>
+            <MyParcelsTable parcels={parcels} refetch={refetch}></MyParcelsTable>
         </div>
     );
 };

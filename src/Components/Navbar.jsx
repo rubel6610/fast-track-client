@@ -56,7 +56,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/be-rider"
+          to="/be-a-rider"
           className={({ isActive }) => (isActive ? "primary-color" : "")}
         >
           Be a Rider
