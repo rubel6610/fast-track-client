@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Loading from "../../../Components/Loading";
+import AssignRiderModal from "./AssignRiderModal";
 
 const AssignRider = () => {
   const axiosSecure = UseAxiosSecure();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [parcel, setParcel] = useState(null);
+  const [riders,setRiders]=useState([])
   const {
     data: parcels = [],
     isLoading,
@@ -17,12 +20,21 @@ const AssignRider = () => {
       return res.data;
     },
   });
+  useEffect(()=>{
+    axiosSecure("/riders/active").then(res=>{
+        setRiders(res.data)
+    });
+  },[axiosSecure])
 
-  const filteredParcels = parcels.filter(
-    (parcel) =>
-      parcel.payment_status === "paid" &&
-      parcel.delivery_status?.toLowerCase() !== "collected"
-  );
+  const handleOpenModal = async (parcel) => {
+    setParcel(parcel);
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setParcel(null);
+    refetch();
+  };
 
   if (isLoading) return <Loading />;
 
@@ -45,15 +57,14 @@ const AssignRider = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredParcels.length === 0 ? (
+          {parcels.length === 0 ? (
             <tr>
               <td colSpan="8" className="text-center py-6 text-gray-500">
                 No paid parcels pending for delivery
               </td>
             </tr>
           ) : (
-            filteredParcels.map((parcel, index) => (
-           
+            parcels.map((parcel, index) => (
               <tr key={parcel._id}>
                 <td>{index + 1}</td>
                 <td>{parcel.Parcel_Info.receiverName}</td>
@@ -63,7 +74,10 @@ const AssignRider = () => {
                 <td>{parcel.delivery_status || "N/A"}</td>
                 <td>{parcel.payment_status}</td>
                 <td>
-                  <button className="btn btn-xs btn-primary">
+                  <button
+                    onClick={() => handleOpenModal(parcel)}
+                    className="btn btn-xs btn-primary"
+                  >
                     Assign Rider
                   </button>
                 </td>
@@ -72,6 +86,13 @@ const AssignRider = () => {
           )}
         </tbody>
       </table>
+      {isModalOpen && (
+        <AssignRiderModal
+          handleCloseModal={handleCloseModal}
+          parcel={parcel}
+          isModalOpen={isModalOpen} riders={riders}
+        />
+      )}
     </div>
   );
 };
