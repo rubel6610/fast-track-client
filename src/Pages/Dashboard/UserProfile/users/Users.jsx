@@ -157,14 +157,14 @@ const Users = () => {
                   {user.role !== "admin" ? (
                     <button
                       onClick={() => handleRoleChange(user.email, "admin")}
-                      className="btn btn-sm btn-success text-white"
+                      className="btn max-w-27 btn-sm btn-success text-white"
                     >
                       Make Admin
                     </button>
                   ) : (
                     <button
                       onClick={() => handleRoleChange(user.email, "user")}
-                      className="btn btn-sm btn-warning text-white"
+                      className="btn max-w-27  btn-sm btn-warning text-white"
                     >
                       Remove Admin
                     </button>

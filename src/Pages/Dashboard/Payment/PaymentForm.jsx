@@ -65,7 +65,7 @@ const PaymentForm = () => {
           },
         },
       });
-      console.log(result);
+   
       if(result.error){
          setError(result.error.message);
       setSuccess("");
@@ -80,8 +80,8 @@ const PaymentForm = () => {
         transactionId:result.paymentIntent.id,
         payment_method:result.paymentIntent.payment_method_types
       }
-      const paymentRes = await axiosSecure.post('/payments',paymentData);
-      console.log(paymentRes.data);
+       await axiosSecure.post('/payments',paymentData);
+  
       navigate(-1)
     }
     

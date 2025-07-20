@@ -17,10 +17,11 @@ const AssignRiderModal = ({
       rider.district === parcel?.Parcel_Info?.receiverDistrict
   );
 
-  const AssignRider = async (name, id) => {
+  const AssignRider = async (name, id,email) => {
     try {
       const res = await axiosSecure.patch(`/parcels/${parcel._id}/assign`, {
         riderName: name,
+        riderEmail:email,
         riderId: id,
       });
 
@@ -93,7 +94,7 @@ const AssignRiderModal = ({
                   <td>
                     <button
                       className="btn btn-xs btn-primary"
-                      onClick={() => AssignRider(rider.name, rider._id)}
+                      onClick={() => AssignRider(rider.name, rider._id,rider.email)}
                     >
                       Assign
                     </button>
