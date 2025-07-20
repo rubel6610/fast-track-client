@@ -49,7 +49,7 @@ const AssignRider = () => {
             <th>#</th>
             <th>Receiver Name</th>
             <th>Phone</th>
-            <th>Address</th>
+            <th>District</th>
             <th>Weight</th>
             <th>Delivery Status</th>
             <th>Payment Status</th>
@@ -69,7 +69,7 @@ const AssignRider = () => {
                 <td>{index + 1}</td>
                 <td>{parcel.Parcel_Info.receiverName}</td>
                 <td>{parcel.Parcel_Info.receiverContact}</td>
-                <td>{parcel.Parcel_Info.receiverAddress}</td>
+                <td>{parcel.Parcel_Info.receiverDistrict}</td>
                 <td>{parcel.Parcel_Info.parcelWeight}</td>
                 <td>{parcel.delivery_status || "N/A"}</td>
                 <td>{parcel.payment_status}</td>

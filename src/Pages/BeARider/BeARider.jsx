@@ -14,6 +14,7 @@ const BeARider = () => {
     handleSubmit,
     watch,
     formState: { errors, isValid },
+    reset,
   } = useForm({ mode: "onChange" });
 
   const { data: warehouseData = [] } = useQuery({
@@ -25,12 +26,9 @@ const BeARider = () => {
   });
 
   const region = watch("region");
-
   const uniqueRegion = [...new Set(warehouseData.map((w) => w.region))];
-
-  const getDistricts = (region) => {
-    return [...new Set(warehouseData.filter((w) => w.region === region).map((w) => w.district))];
-  };
+  const getDistricts = (region) =>
+    [...new Set(warehouseData.filter((w) => w.region === region).map((w) => w.district))];
 
   const onSubmit = async (data) => {
     const riderData = {
@@ -41,35 +39,32 @@ const BeARider = () => {
       created_At: new Date().toISOString(),
     };
 
-   try {
-  const res = await axiosSecure.post("/riders", riderData);
+    try {
+      const res = await axiosSecure.post("/riders", riderData);
+      if (res.data?.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: user.displayName,
+          text: "Your application submitted successfully!",
+          confirmButtonColor: "#16a34a",
+        });
+        reset(); // reset optional fields
+      }
+    } catch (error) {
+      let errorMessage = "Something went wrong. Please try again.";
+      if (error.response?.status === 409) {
+        errorMessage = "❌ You have already submitted an application.";
+      } else if (error.response?.data?.error) {
+        errorMessage = `❌ ${error.response.data.error}`;
+      }
 
-  if (res.data?.insertedId) {
-    Swal.fire({
-      icon: "success",
-      title: user.displayName,
-      text: "Your application submitted successfully!",
-      confirmButtonColor: "#16a34a",
-    });
-  }
-} catch (error) {
-  // Server response error
-  let errorMessage = "Something went wrong. Please try again.";
-
-  if (error.response?.status === 409) {
-    errorMessage = "❌ You have already submitted an application.";
-  } else if (error.response?.data?.error) {
-    errorMessage = `❌ ${error.response.data.error}`;
-  }
-
-  Swal.fire({
-    icon: "error",
-    title: "Submission Failed",
-    text: errorMessage,
-    confirmButtonColor: "#dc2626",
-  });
-}
-
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: errorMessage,
+        confirmButtonColor: "#dc2626",
+      });
+    }
   };
 
   return (
@@ -78,23 +73,19 @@ const BeARider = () => {
         Become a Rider
       </h1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-6"
-      >
-        {/* User Info */}
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6">
+        {/* Name */}
         <input
           type="text"
-          {...register("name")}
-          value={user.displayName || ""}
+          defaultValue={user.displayName}
           className="input input-bordered w-full"
           disabled
         />
 
+        {/* Email */}
         <input
           type="email"
-          {...register("email")}
-          value={user.email || ""}
+          defaultValue={user.email}
           className="input input-bordered w-full"
           disabled
         />
@@ -138,9 +129,7 @@ const BeARider = () => {
             {...register("region", { required: true })}
             className="select select-bordered w-full"
           >
-            <option value="" disabled>
-              Select Region
-            </option>
+            <option value="">Select Region</option>
             {uniqueRegion.map((r, idx) => (
               <option key={idx} value={r}>
                 {r}
@@ -156,9 +145,7 @@ const BeARider = () => {
             {...register("district", { required: true })}
             className="select select-bordered w-full"
           >
-            <option value="" disabled>
-              Select District
-            </option>
+            <option value="">Select District</option>
             {getDistricts(region).map((d, idx) => (
               <option key={idx} value={d}>
                 {d}
@@ -168,7 +155,7 @@ const BeARider = () => {
           {errors.district && <p className="text-red-500 text-sm">District is required</p>}
         </div>
 
-        {/* Bike Info */}
+        {/* Bike Brand */}
         <div>
           <input
             type="text"
@@ -176,9 +163,12 @@ const BeARider = () => {
             placeholder="Bike Brand (e.g. Yamaha FZ)"
             className="input input-bordered w-full"
           />
-          {errors.bike_brand && <p className="text-red-500 text-sm">Bike brand is required</p>}
+          {errors.bike_brand && (
+            <p className="text-red-500 text-sm">Bike brand is required</p>
+          )}
         </div>
 
+        {/* Bike Registration */}
         <div>
           <input
             type="text"
@@ -186,7 +176,9 @@ const BeARider = () => {
             placeholder="Bike Registration Number"
             className="input input-bordered w-full"
           />
-          {errors.bike_registration && <p className="text-red-500 text-sm">Bike registration number is required</p>}
+          {errors.bike_registration && (
+            <p className="text-red-500 text-sm">Bike registration number is required</p>
+          )}
         </div>
 
         {/* Additional Info */}
@@ -197,6 +189,7 @@ const BeARider = () => {
           rows={3}
         ></textarea>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={!isValid}
